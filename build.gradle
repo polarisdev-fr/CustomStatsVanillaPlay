@@ -1,0 +1,37 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.0' // Ajoutez cette ligne
+}
+
+group = 'fr.polarisdev'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+    }
+}
+
+shadowJar {
+    archiveClassifier.set('all')  // Cela crée un JAR avec le suffixe "-all"
+    manifest {
+        attributes(
+                'Main-Class': 'fr.polarisdev.customstats.Main'  // Remplacez par votre classe principale
+        )
+    }
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT' // Spigot API pour la version 1.21
+    implementation  'org.nanohttpd:nanohttpd:2.3.1'
+    implementation  'mysql:mysql-connector-java:8.0.30'
+    implementation("org.json:json:20210307")
+}
+
+jar {
+    archiveFileName = "CustomStatsPAPI.jar"
+}
