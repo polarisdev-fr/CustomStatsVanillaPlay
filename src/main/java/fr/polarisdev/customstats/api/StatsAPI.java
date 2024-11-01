@@ -2,6 +2,7 @@ package fr.polarisdev.customstats.api;
 
 import fi.iki.elonen.NanoHTTPD;
 import fr.polarisdev.customstats.database.DatabaseManager;
+import fr.polarisdev.customstats.utils.PlayerStats;
 
 public class StatsAPI extends NanoHTTPD {
     private final DatabaseManager databaseManager;
@@ -18,7 +19,7 @@ public class StatsAPI extends NanoHTTPD {
             return newFixedLengthResponse(Response.Status.BAD_REQUEST, "application/json", "{\"error\": \"UUID is required\"}");
         }
 
-        String playerStatsJson = databaseManager.getPlayerStats(uuid);
-        return newFixedLengthResponse(Response.Status.OK, "application/json", playerStatsJson);
+        PlayerStats stats = databaseManager.getPlayerStats(uuid);
+        return newFixedLengthResponse(Response.Status.OK, "application/json", String.valueOf(stats));
     }
 }

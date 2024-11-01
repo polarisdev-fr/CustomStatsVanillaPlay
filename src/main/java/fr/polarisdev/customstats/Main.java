@@ -3,7 +3,7 @@ package fr.polarisdev.customstats;
 import fr.polarisdev.customstats.api.StatsAPI;
 import fr.polarisdev.customstats.commands.StatsCommand;
 import fr.polarisdev.customstats.database.DatabaseManager;
-import fr.polarisdev.customstats.listeners.PlayerJoinListener;
+import fr.polarisdev.customstats.runner.PlayerStatsUpdater;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -40,13 +40,14 @@ public class Main extends JavaPlugin {
 
         PluginCommand command = this.getCommand("customstats"); // Remplacez par le nom de votre commande
         if (command != null) {
-            command.setExecutor(new StatsCommand(databaseManager)); // Assurez-vous que CustomStatsCommand implémente CommandExecutor
+            command.setExecutor(new StatsCommand(this, databaseManager)); // Assurez-vous que CustomStatsCommand implémente CommandExecutor
         } else {
             getLogger().severe("La commande 'customstats' n'est pas définie dans plugin.yml !");
         }
 
         // Enregistrez le listener
-        Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(this), this);
+        PlayerStatsUpdater.startUpdating(this, databaseManager);
+        getLogger().info("CustomStatsPlugin enabled.");
     }
 
     @Override
