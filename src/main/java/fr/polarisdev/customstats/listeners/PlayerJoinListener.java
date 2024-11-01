@@ -2,9 +2,12 @@ package fr.polarisdev.customstats.listeners;
 
 import fr.polarisdev.customstats.Main;
 import fr.polarisdev.customstats.runner.PlayerStatsUpdater;
+import fr.polarisdev.customstats.utils.PlayerStats;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 
 public class PlayerJoinListener implements Listener {
@@ -17,7 +20,20 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        PlayerStatsUpdater.startUpdating(plugin, plugin.getDatabaseManager());
+        Player player = event.getPlayer();
+        PlayerStats playerStats = PlayerStats.GetPlayerStats(player);
+
+        // Update player stats in the database
+        plugin.getDatabaseManager().updatePlayerStats(playerStats);
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        PlayerStats playerStats = PlayerStats.GetPlayerStats(player);
+
+        // Update player stats in the database
+        plugin.getDatabaseManager().updatePlayerStats(playerStats);
     }
 
 }

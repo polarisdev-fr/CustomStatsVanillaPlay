@@ -1,5 +1,6 @@
 package fr.polarisdev.customstats.api;
 
+import com.google.gson.JsonObject;
 import fi.iki.elonen.NanoHTTPD;
 import fr.polarisdev.customstats.database.DatabaseManager;
 import fr.polarisdev.customstats.utils.PlayerStats;
@@ -20,6 +21,18 @@ public class StatsAPI extends NanoHTTPD {
         }
 
         PlayerStats stats = databaseManager.getPlayerStats(uuid);
-        return newFixedLengthResponse(Response.Status.OK, "application/json", String.valueOf(stats));
+
+        JsonObject statsJson = new JsonObject();
+        statsJson.addProperty("uuid", uuid);
+        statsJson.addProperty("deaths", stats.getDeaths());
+        statsJson.addProperty("blocksMined", stats.getBlocksMined());
+        statsJson.addProperty("kills", stats.getKills());
+        statsJson.addProperty("entitiesKilled", stats.getEntitiesKilled());
+        statsJson.addProperty("blocksTraveled", stats.getBlocksTraveled());
+        statsJson.addProperty("blocksFlying", stats.getBlocksFlying());
+        statsJson.addProperty("sanctions", stats.getSanctions());
+        statsJson.addProperty("currentGrade", stats.getCurrentGrade());
+
+        return newFixedLengthResponse(Response.Status.OK, "application/json", statsJson.toString());
     }
 }

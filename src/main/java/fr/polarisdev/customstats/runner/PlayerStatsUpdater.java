@@ -31,6 +31,6 @@ public class PlayerStatsUpdater implements Runnable {
     public static void startUpdating(Main plugin, DatabaseManager databaseManager) {
         PlayerStatsUpdater updater = new PlayerStatsUpdater(databaseManager);
         // Schedule the task to run every 1200 ticks (1 minute)
-        Bukkit.getScheduler().runTaskTimer(plugin, updater, 0L, 1200L);
+        Bukkit.getScheduler().runTaskTimer(plugin, updater, 0L, 60L);
     }
 }
